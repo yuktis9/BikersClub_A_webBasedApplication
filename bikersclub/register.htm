@@ -1,0 +1,350 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<head>
+	<title>Bikers</title>
+		<link href="css/style.css" rel="stylesheet" type="text/css" />
+    <style type="text/css">
+<!--
+.style12 {color: #FF00FF}
+.style7 {color: #FFFFFF}
+.style16 {color: #c1c1c1; font-weight: bold; }
+.style17 {color: #c1c1c1}
+-->
+    </style>
+     <script>
+
+		// basis that have formatting problems
+		validate = new Object(  );
+		
+		
+		// Takes a value, checks if it's an integer, and returns true or false
+		function isInteger ( value ) {
+			return ( value == parseInt( value ) );
+		}
+		
+		
+		// Takes a value and a range, checks if the value is in the range, and
+		// returns true or false
+		function inRange ( value, low, high ) {
+			return ( !( value < low ) && value <= high );
+		}
+		
+		
+		// Checks values against formats such as '#####' or '###-##-####'
+		function checkFormat( value, format ) {
+			var formatOkay = true;
+			if ( value.length != format.length ) {
+				return false;
+			}
+			for ( var i = 0; i < format.length; i++ ) {
+				if ( format.charAt(i) == '#' && ! isInteger( value.charAt(i) ) ) {
+					return false;
+				}
+				else if ( format.charAt(i) != '#' &&
+						  format.charAt(i) != value.charAt(i) ) {
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		
+		// Takes a form and an array of element names; verifies that each has a value
+		function requireValues ( form, requiredValues ) {
+			for ( var i = 0; i < requiredValues.length; i++ ) {
+				element = requiredText[i];
+				if ( form[element].value == "" ) {
+					alert( "Please enter a value for " + element + "." );
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		
+		// Takes a form and an array of element names; verifies that each has an
+		// option selected (other than the first; assumes that the first option in
+		// each select menu contains instructions)
+		function requireSelects ( form, requiredSelect ) {
+			for ( var i = 0; i < requiredSelect.length; i++ ) {
+				element = requiredSelect[i];
+				if ( form[element].selectedIndex <= 0 ) {
+					alert( "Please select a value for " + element + "." );
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		
+		// Takes a form and an array of element names; verifies that each has a
+		// value checked
+		function requireRadios ( form, requiredRadio ) {
+			for ( var i = 0; i < requiredRadio.length; i++ ) {
+				element = requiredRadio[i];
+				isChecked = false;
+				for ( j = 0; j < form[element].length; j++ ) {
+					if ( form[element][j].checked ) {
+						isChecked = true;
+					}
+				}
+				if ( ! isChecked ) {
+					alert( "Please choose a " + form[element][0].name + "." );
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		
+		// Verify there are no uncorrected formatting problems with elements
+		// validated on a per element basis
+		function checkProblems (  ) {
+			for ( element in validate ) {
+				if ( ! validate[element] ) {
+					alert( "Please correct the format of " + element + "." );
+					return false;
+				}
+			}
+			return true;
+		}
+		
+		
+		// Verifies that the value of the provided element has ##### format
+		function checkZip ( element ) {
+			if ( ! checkFormat( element.value, "#####" ) ) {
+				alert( "Please enter a five digit zip code." );
+				element.focus(  );
+				validate[element.name] = false;
+			}
+			else {
+				validate[element.name] = true;
+			}
+			return validate[element.name];
+		}
+		
+		
+		// Verifies that the value of the provided element has ###-###-#### format
+		function checkPhone ( element ) { 
+			if ( ! checkFormat( element.value, "###-###-####" ) ) {
+				alert( "Please enter " + element.name + " in 800-555-1212 " +
+					   "format." );
+				element.focus(  );
+				validate[element.name] = false;
+			}
+			else {
+				validate[element.name] = true;
+			}
+			return validate[element.name];
+		}
+		
+		
+		// Verifies that the value of the provided element has ###-##-#### format
+		function checkSSN ( element ) {
+			if ( ! checkFormat( element.value, "###-##-####" ) ) {
+				alert( "Please enter your Social Security Number in " +
+					   "123-45-6789 format." );
+				element.focus(  );
+				validate[element.name] = false;
+			}
+			else {
+				validate[element.name] = true;
+			}
+			return validate[element.name];
+		}
+		
+		
+		// Verifies that the value of the provided element is an integer between 1 and 150
+		function checkAge ( element ) {
+			if ( ! isInteger( element.value ) ||
+				 ! inRange( element.value, 1, 150 ) ) {
+				alert( "Please enter a number between 1 and 150 for age." );
+				element.focus(  );
+				validate[element.name] = false;
+			}
+			else {
+				validate[element.name] = true;
+			}
+			return validate[element.name];
+		}
+			</script>
+			<script><!--
+			  function validateForm ( form ) {
+				  
+				  requiredText = new Array( "name", "address", "city", "zip",
+											"home_phone", "work_phone", "age",
+											"social_security", "maiden_name" );
+				  
+				  requiredSelect = new Array( "state", "education" );
+				  requiredRadio  = new Array( "gender" );
+				  
+				  return requireValues ( form, requiredText   ) &&
+						 requireSelects( form, requiredSelect ) &&
+						 requireRadios ( form, requiredRadio  ) &&
+						 checkProblems (  );
+			  }
+			// -->
+			</script>
+</head>
+
+<body>
+	<div id="page">
+		<div id="header"> <!-- start of header -->
+			<ul>
+				<li><a href="index.htm">Home</a></li>
+			
+			  <li><a href="events.htm">Events</a></li>
+				<li><a href="gallery.htm">Gallery</a></li>
+				<li><a href="login.htm">Login</a></li>
+				<li><a href="contact-us.htm">Contact</a></li>
+			</ul>
+
+			<div>
+				<a href="register.htm" class="join"></a>
+				<h3>Press To Join the Club .. </h3>
+				</div>
+		</div> <!-- end of header -->
+
+		<div id="body">  
+			<div class="contents">
+				<h1>REGISTRATION</h1>
+				<div class="registration">
+					<p>
+						To continue to become a part of this club please register here... </p>
+					<form action="/~ysarwadia/cgi-bin/form_data.cgi" method="POST">
+					  <table border=0 align="center">
+                        <tr>
+                          <td width="333" class="registration"><span class="style16"> User Name</span></td>
+                          <td width="386" class="registration"><input name="username" type="text" id="username" size="30" maxlength="30"></td>
+                        </tr>
+                        <tr>
+                          <td width="333" class="registration"><span class="style16"> Password</span></td>
+                          <td width="386" class="registration"><input name="password" type="password" size="30" maxlength="30">                          </td>
+                        </tr>
+                        <tr>
+                          <td class="registration"><span class="style16"> Email</span></td>
+                          <td class="registration"><input name="email" type="email" size="30" maxlength="30" id="email" /></td>
+                        </tr>
+                        <tr>
+                          <td class="registration"><span class="style16"> Address</span></td>
+                          <td class="registration"><input name="address" type="text" size="40" maxlength="50">                          </td>
+                        </tr>
+                        <tr>
+                          <td class="registration"><span class="style16"> City</span></td>
+                          <td class="registration"><input name="city" type="text" size="20" maxlength="20">                          </td>
+                        </tr>
+                        <tr>
+                          <td class="registration"><span class="style16"> State</span></td>
+                          <td class="registration"><span class="style12">
+                            <select name="state" size="1">
+                              <option value="">Please Choose a State</option>
+                              <option value="AL">Alabama</option>
+                              <option value="AK">Alaska</option>
+                              <option value="AZ">Arizona</option>
+                              <option value="IL">Illinois</option> 
+                              <option value="OTH">Others</option>
+                              
+                  .
+                  .
+                  .
+              
+              
+                              <option value="WY">Wyoming</option>
+                            </select>
+                          </span> </td>
+                        </tr>
+                        <tr>
+                          <td class="registration"><span class="style16"> Zip Code </span></td>
+                          <td class="registration"><input name="zip" type="text"
+                onChange="checkZip( this );" size="5" maxlength="5">                          </td>
+                        </tr>
+                        <tr>
+                          <td class="registration"><span class="style16"> Home Phone Number</span></td>
+                          <td class="registration"><span class="style17">
+                            <input type="text" name="home_phone" size="12" maxlength="12"
+              onChange="checkPhone( this );">
+                            <i>( use this format: 800-555-1212)</i> </span></td>
+                        </tr>
+                        <tr>
+                          <td class="registration"><span class="style16"> Work Phone Number</span></td>
+                          <td class="registration"><span class="style17">
+                            <input type="text" name="work_phone" size="12" maxlength="12"
+              onChange="checkPhone( this );">
+                            <i>( use this format: 800-555-1212)</i> </span></td>
+                        </tr>
+                        <tr>
+                          <td class="registration"><span class="style16"> Social Security Number (US residents only) </span></td>
+                          <td class="registration"><span class="style17">
+                            <input type="text" name="social_security" size="11" maxlength="11"
+              onChange="checkSSN( this );">
+                            <i>( use this format: 123-45-6789)</i> </span></td>
+                        </tr>
+                        <tr>
+                          <td class="registration"><span class="style16"> Mother's Maiden Name</span></td>
+                          <td class="registration"><input name="maiden_name" type="text" size="20" maxlength="20">                          </td>
+                        </tr>
+                        <tr>
+                          <td class="registration"><span class="style16"> DOB</span></td>
+                          <td class="registration"><input name="date" type="Date" ></td>
+                        </tr>
+                        <tr>
+                          <td class="registration"><span class="style16"> Gender</span></td>
+                          <td class="registration"><span class="style7">
+                            <input type="radio" name="gender" value="male">
+                            Male
+                            <input type="radio" name="gender" value="female">
+                            Female </span></td>
+                        </tr>
+                        <tr>
+                          <td class="registration"><span class="style16"> Type of Membership</span></td>
+                          <td class="registration"><span class="style7">
+                            <p> <br>
+                                <SELECT NAME="activity" SIZE=2 MULTIPLE>
+                                  <OPTION>Annual</OPTION>
+                                  <OPTION>Monthly</OPTION>
+                                  <OPTION>Weekly</OPTION>
+                                  <OPTION>Other</OPTION>
+                                </SELECT>
+                          </span> </td>
+                        </tr>
+                        <tr>
+                          <td class="registration"><span class="style16"> Interests</span></td>
+                          <td class="registration"><span class="style7">
+                            <INPUT TYPE="checkbox" NAME="interests" VALUE="Hockey">
+                            Rock Climbing<BR>
+                            <INPUT TYPE="checkbox" NAME="interests" VALUE="Baseball">
+                            Jungle Safari<BR>
+                            <INPUT TYPE="checkbox" NAME="interests" VALUE="Others">
+                            Others<BR>
+                            </p>
+                          </span></td>
+                        </tr>
+                        <tr>
+                        <td class="registration"><span class="style16"> Upload Image</span></td>
+                         <td class="registration"><span class="style7">
+                        <input type="file" name="pic" accept="image/*" />
+                         </span></td>
+                        </tr>
+                        <tr>
+                          <td class="registration"><span class="style16"> Comments</span></td>
+                          <td class="registration"><TEXTAREA ROWS=10 COLS=40 NAME="comments" WRAP="virtual">Your comments here</TEXTAREA>
+                              </p>
+                              </span></td>
+                        </tr>
+                        <tr>
+                          <td colspan=2 align=right><div align="center" class="style7">
+                            <input type="submit" name="submit" id="submit" value="Submit" class="button" />
+<input name="reset" type="reset" id="reset" onclick="alert('Are you sure to RESET)" class="button">
+                          </div></td>
+                        </tr>
+                      </table>
+					</form>
+				</div>
+                
+			</div>
+		</div>  <!-- end of body wrapper -->
+	</div><!-- end of footer part -->
+</body>
+</html>
